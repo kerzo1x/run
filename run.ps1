@@ -1,7 +1,7 @@
 $file = $args[0]
 $extraArgs = $args[1..$args.Length] 
 $ext = [System.IO.Path]::GetExtension($file).ToLower()
-Write-Host $ext
+$fileName = [System.IO.Path]::GetFileNameWithoutExtension($file)
 switch ($ext) {
     ".js" {
         if (-not (Get-Command bun -ErrorAction SilentlyContinue)) {
@@ -20,8 +20,17 @@ switch ($ext) {
         Write-Host "Running Python" 
     }
     ".c" { 
-        Write-Host "Running C" 
-    }
+        Write-Host "Running C"
+        if (-not (Get-Command gcc -ErrorAction SilentlyContinue)) {
+        Write-Host "gcc is not installed, download it please"
+        exit
+        }
+        & "gcc" "./$file" "-o" "./$fileName.exe"
+        if($?) {
+            & "$fileName.exe"
+            Remove-Item -Path ./"$fileName.exe"
+        }
+        }
     default { 
         Write-Host "Not supported extention yet" 
     }
