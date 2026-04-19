@@ -17,7 +17,7 @@ This project is a fun / experimental tool built mainly for learning and quick de
 
 ## Usage
 
-```powershell
-.\run.ps1 script.js
-.\run.ps1 script.py arg1 arg2
-.\run.ps1 program.c
+After adding the script to your PATH, you can run files using:
+
+```bash
+run <file> [args]
